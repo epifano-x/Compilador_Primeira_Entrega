@@ -1,0 +1,48 @@
+patointeiro x, y, z;
+patointeiro a, b, c = 10;
+patointeiro p = 5, q, r = 20;
+patoreal jorge = 0.15;
+patoescrito jubileu;
+sepato forassim(a =ingual= 5 &tambem& c =ingual= 10)entao fazisso{
+  repeteopato forassim(p>1)entao fazisso{ 
+    paraopato forassim( c <20 )entao fazisso{
+      c=c*1;
+    };
+    p=p-1;
+  };
+  x,y,z =10;
+};
+sepato forassim( a )entao fazisso{
+  repeteopato forassim( p>4 )entao fazisso{
+    paraopato forassim( c <15 )entao fazisso{
+      c=c+1;
+      jubileu = umpresentemisterioso;
+    };
+    p=p-1;
+    jorge = jorge + 0.1;
+  };
+} outropato forassim( a |ouisso| b )entao fazisso{
+  a = p + b;
+} senaopato fazisso{ 
+  b = a;
+  repeteopato forassim( p>4 )entao fazisso{
+    paraopato forassim( c <15 )entao fazisso{
+      c=c+1;
+      jubileu = umpresentemisterioso;
+    };
+  p=p-1;
+  jorge = jorge + 0.1;
+  };
+};
+sepato forassim( a =ingual= b )entao fazisso{
+    paraopato forassim( c <15 )entao fazisso{
+      c=c+1;
+      repeteopato forassim( p>4 )entao fazisso{
+        jorge = jorge + 0.1;
+      };
+      jubileu = umpresentemisterioso;
+    };
+  x , y , z = 20;
+};
+$php$
+

@@ -1,0 +1,197 @@
+options
+{
+  static = true;
+  //LOOKAHEAD = 2; // Adicione esta linha
+}
+
+PARSER_BEGIN(Compilador)
+
+public class Compilador
+{
+  public static void main(String args []) throws ParseException
+  {
+    Compilador parser = new Compilador(System.in);
+    while (true)
+    {
+      System.out.println("ESCREVE LOGO CARAMBA \n- >");
+     
+      try
+      {
+        Compilador.Start();
+      }
+      catch (Exception e)
+      {
+        System.out.println("NOK.");
+        System.out.println(e.getMessage());
+        Compilador.ReInit(System.in);
+      }
+      catch (Error e)
+      {
+        System.out.println("Oops.");
+        System.out.println(e.getMessage());
+        break;
+      }
+    }
+  }
+}
+
+PARSER_END(Compilador)
+
+SKIP :
+{
+  " "
+| "\r"
+| "\t"
+| "\n"
+}
+
+TOKEN : {
+    < IF : "sepato" >
+  | < ELSE : "senaopato" >
+  | < ELSEIF : "outropato" >
+  | < WHILE : "repeteopato" >
+  | < FOR : "paraopato" >
+  | < INT : "patointeiro" >
+  | < FLOAT : "patoreal" >
+  | < STRING : "patoescrito" >
+  | < ID : (["a"-"z"])+ >
+  | < NUM : (["0"-"9"])+ ( "." (["0"-"9"])+ )? >
+  | < ASSIGN : "=" >
+  | < SEMICOLON : ";" >
+  | < OPEN_CURLY : "fazisso{" >
+  | < CLOSE_CURLY : "}" >
+  | < OPEN_PAREN : "forassim(" >
+  | < CLOSE_PAREN : ")entao" >
+  | < COMMA : "," >
+  | < EQUALS : "=ingual=" >
+  | < AND : "&tambem&" > 
+  | < OR : "|ouisso|" >   
+  | <EOF_TOKEN : "$php$">
+}
+
+
+void Start() :
+{}
+{
+    (Statement())* <EOF_TOKEN>
+}
+
+void Statement() :
+{}
+{
+    (VariableDeclaration() | Assignment() | Conditional() | Loop() | MultiVariableAssignment())
+    <SEMICOLON>
+}
+
+void VariableDeclaration() :
+{}
+{
+    Type() VariableDeclarations()
+}
+
+void VariableDeclarations() :
+{}
+{
+    <ID> (("=" Expression()))? ("," <ID> (("=" Expression()))?)*
+}
+
+void MultiVariableAssignment() :
+{}
+{
+    <ID> (("," <ID>)+) <ASSIGN> Expression()
+}
+void Assignment() :
+{}
+{
+    <ID> <ASSIGN> Expression()
+}
+
+void Conditional() :
+{}
+{
+    <IF> <OPEN_PAREN> Expression() <CLOSE_PAREN> <OPEN_CURLY>
+    (Statement())*
+    <CLOSE_CURLY>
+    (Else() | ElseIf())?
+}
+
+void Else() :
+{}
+{
+    <ELSE> <OPEN_CURLY>
+    (Statement())*
+    <CLOSE_CURLY>
+    (Else() | ElseIf())?
+}
+
+void ElseIf() :
+{}
+{
+    <ELSE> <IF> <OPEN_PAREN> Expression() <CLOSE_PAREN> <OPEN_CURLY>
+    (Statement())*
+    <CLOSE_CURLY>
+    (Else() | ElseIf())?
+}
+
+
+void Loop() :
+{}
+{
+    (<WHILE> | <FOR>) <OPEN_PAREN> Expression() <CLOSE_PAREN> <OPEN_CURLY>
+    (Statement())*
+    <CLOSE_CURLY>
+}
+
+void Type() :
+{}
+{
+    (<INT> | <FLOAT> | <STRING>)
+}
+
+void Expression() :
+{}
+{
+    OrExpression() // Use a regra de or (ou)
+}
+
+void OrExpression() :
+{}
+{
+    AndExpression() ( <OR> AndExpression() )*
+}
+
+void AndExpression() :
+{}
+{
+    EqualityExpression() ( <AND> EqualityExpression() )*
+}
+
+void EqualityExpression() :
+{}
+{
+    RelationalExpression() ( <EQUALS> RelationalExpression() )*
+}
+
+void RelationalExpression() :
+{}
+{
+    AdditiveExpression() ( ( "<" | ">" | <EQUALS> ) AdditiveExpression() )*
+}
+
+void AdditiveExpression() :
+{}
+{
+    Term() ( ( "+" | "-" ) Term() )*
+}
+
+void Term() :
+{}
+{
+    Factor() ( ( "*" | "/" ) Factor() )*
+}
+
+void Factor() :
+{}
+{
+    <NUM> | <ID> | <OPEN_PAREN> Expression() <CLOSE_PAREN>
+}
